@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import {
   ArrowRight,
   CalendarClock,
@@ -8,7 +9,8 @@ import {
   UsersRound,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const workerFeatures = [
   "내 근무 일정과 근무 일지 조회",
@@ -61,13 +63,19 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row">
-              <Button size="lg" className="rounded-full px-6">
-                관리자 대시보드 설계하기
+              <Link
+                href="/admin/login"
+                className={cn(buttonVariants({ size: "lg" }), "rounded-full px-6")}
+              >
+                관리자 로그인
                 <ArrowRight className="size-4" />
-              </Button>
-              <Button size="lg" variant="secondary" className="rounded-full px-6">
-                근무자 화면 설계하기
-              </Button>
+              </Link>
+              <Link
+                href="/worker/login"
+                className={cn(buttonVariants({ size: "lg", variant: "secondary" }), "rounded-full px-6")}
+              >
+                근무자 로그인
+              </Link>
             </div>
           </div>
 

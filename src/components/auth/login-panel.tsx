@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ArrowRight, LockKeyhole, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, LockKeyhole } from "lucide-react";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -53,7 +53,7 @@ export function LoginPanel({
           <div className="grid gap-3 sm:grid-cols-3">
             {highlights.map((highlight) => (
               <div key={highlight} className="rounded-3xl border bg-card/70 p-4 shadow-sm backdrop-blur">
-                <Sparkles className="mb-4 size-5 text-primary" />
+                <CheckCircle2 className="mb-4 size-5 text-primary" />
                 <p className="text-sm font-semibold leading-6">{highlight}</p>
               </div>
             ))}
@@ -76,7 +76,7 @@ export function LoginPanel({
               <span className="text-sm font-semibold">이메일</span>
               <input
                 type="email"
-                placeholder="demo@worklog.local"
+                placeholder="name@worklogmate.co.kr"
                 className="h-12 w-full rounded-2xl border bg-background/80 px-4 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10"
               />
             </label>
@@ -98,7 +98,7 @@ export function LoginPanel({
 
           <div className="my-6 flex items-center gap-3 text-xs font-medium text-muted-foreground">
             <span className="h-px flex-1 bg-border" />
-            포트폴리오 데모
+            또는
             <span className="h-px flex-1 bg-border" />
           </div>
 
@@ -106,8 +106,8 @@ export function LoginPanel({
             href={demoHref}
             className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "h-12 w-full rounded-2xl")}
           >
-            데모판 체험하기
-            <Sparkles className="size-4" />
+            바로 입장하기
+            <ArrowRight className="size-4" />
           </Link>
 
           <Link

@@ -20,7 +20,7 @@ export default function AdminPage() {
             <p className="text-sm font-semibold text-muted-foreground">Admin Dashboard</p>
             <h1 className="mt-2 text-4xl font-black tracking-tight">관리자 백오피스</h1>
             <p className="mt-3 text-muted-foreground">
-              데모판 체험으로 진입한 관리자 화면입니다. 이후 근무자/일정/출퇴근 CRUD를 연결합니다.
+              근무자, 일정, 출퇴근 기록을 관리하고 월별 지급 현황을 확인합니다.
             </p>
           </div>
           <Link href="/admin/login" className={cn(buttonVariants({ variant: "secondary" }), "rounded-full")}>

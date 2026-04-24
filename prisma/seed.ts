@@ -11,10 +11,10 @@ async function main() {
   await prisma.workSchedule.deleteMany();
   await prisma.user.deleteMany();
 
-  const admin = await prisma.user.create({
+  await prisma.user.create({
     data: {
       name: "김하나",
-      email: "admin@worklog.local",
+      email: "admin@worklogmate.co.kr",
       role: Role.ADMIN,
       hourlyWage: 0,
       position: "매장 관리자",
@@ -26,20 +26,20 @@ async function main() {
     prisma.user.create({
       data: {
         name: "이도윤",
-        email: "doyun@worklog.local",
+        email: "doyun@worklogmate.co.kr",
         role: Role.WORKER,
         hourlyWage: 12000,
-        position: "오픈 근무",
+        position: "아르바이트",
         phone: "010-2345-6789",
       },
     }),
     prisma.user.create({
       data: {
         name: "박서연",
-        email: "seoyeon@worklog.local",
+        email: "seoyeon@worklogmate.co.kr",
         role: Role.WORKER,
         hourlyWage: 11500,
-        position: "마감 근무",
+        position: "아르바이트",
         phone: "010-3456-7890",
       },
     }),
@@ -87,8 +87,6 @@ async function main() {
       },
     ],
   });
-
-  console.log(`Seeded admin ${admin.email} and ${workers.length} workers.`);
 }
 
 main()

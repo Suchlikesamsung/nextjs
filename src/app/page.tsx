@@ -42,7 +42,7 @@ export default function Home() {
             Worklog Mate
           </div>
           <span className="hidden text-sm text-muted-foreground sm:block">
-            Next.js + Prisma + SQLite CRUD starter
+            근무자 웹서비스 + 관리자 백오피스
           </span>
         </nav>
 
@@ -123,7 +123,7 @@ export default function Home() {
               <ClipboardList className="mb-4 size-5 text-primary" />
               <p className="font-mono text-sm font-semibold">{route}</p>
               <p className="mt-2 text-sm text-muted-foreground">
-                Prisma + Zod 기반 Route Handler scaffold
+                근무 기록을 안정적으로 저장하고 조회합니다.
               </p>
             </div>
           ))}

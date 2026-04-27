@@ -1,7 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import {
   BadgeCheck,
-  BriefcaseBusiness,
   CalendarCheck,
   CalendarDays,
   Clock3,
@@ -10,7 +12,10 @@ import {
   MapPin,
   NotebookText,
   Phone,
+  ReceiptText,
+  Umbrella,
   UserRound,
+  WalletCards,
 } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
@@ -23,7 +28,7 @@ const worker = {
   hourlyWage: "12,000원",
   workedDays: "18일",
   employmentType: "파트타임",
-  position: "아르바이트",
+  paidLeaveDays: "3일",
   branch: "성수 1호점",
   phone: "010-2345-6789",
   email: "doyun@worklogmate.co.kr",
@@ -37,7 +42,7 @@ const profileItems = [
   ["할당 시급", worker.hourlyWage, Coins],
   ["근무일수", worker.workedDays, NotebookText],
   ["근무형태", worker.employmentType, Clock3],
-  ["직위", worker.position, BriefcaseBusiness],
+  ["유급 휴가일", worker.paidLeaveDays, Umbrella],
 ];
 
 const contactItems = [
@@ -53,7 +58,65 @@ const cards = [
   ["예상 급여", "158,400원", Coins],
 ];
 
+const attendanceRows = [
+  {
+    date: "4월 23일",
+    type: "오픈",
+    clockIn: "08:58",
+    clockOut: "15:05",
+    breakTime: "30분",
+    total: "5.6시간",
+    status: "완료",
+    memo: "오픈 준비 및 재고 정리",
+  },
+  {
+    date: "4월 22일",
+    type: "오픈",
+    clockIn: "09:01",
+    clockOut: "15:00",
+    breakTime: "30분",
+    total: "5.5시간",
+    status: "완료",
+    memo: "매장 정리",
+  },
+  {
+    date: "4월 20일",
+    type: "주말",
+    clockIn: "10:00",
+    clockOut: "16:08",
+    breakTime: "30분",
+    total: "5.6시간",
+    status: "완료",
+    memo: "피크 타임 지원",
+  },
+  {
+    date: "4월 24일",
+    type: "오픈",
+    clockIn: "-",
+    clockOut: "-",
+    breakTime: "30분",
+    total: "6.0시간",
+    status: "예정",
+    memo: "10:00 출근 예정",
+  },
+];
+
+const salaryItems = [
+  ["기본 근무수당", "158,400원", "13.2시간 x 12,000원"],
+  ["주휴수당", "24,000원", "이번 주 예상 충족분"],
+  ["유급 휴가수당", "36,000원", "3일 잔여"],
+  ["공제 예정", "-8,400원", "세금 및 보험 예상"],
+];
+
+const salarySummary = [
+  ["총 지급 예정", "218,400원"],
+  ["공제 후 예상", "210,000원"],
+  ["다음 지급일", "5월 10일"],
+];
+
 export default function WorkerPage() {
+  const [activeTab, setActiveTab] = useState<"attendance" | "salary">("attendance");
+
   return (
     <main className="min-h-screen bg-background px-6 py-8">
       <section className="mx-auto max-w-6xl space-y-8">
@@ -123,7 +186,156 @@ export default function WorkerPage() {
             </article>
           ))}
         </div>
+
+        <section className="space-y-4">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-sm font-semibold text-muted-foreground">Monthly Details</p>
+              <h2 className="mt-2 text-3xl font-black tracking-tight">상세 내역</h2>
+            </div>
+
+            <div className="grid grid-cols-2 gap-1 rounded-lg border bg-card p-1 shadow-sm">
+              <button
+                type="button"
+                aria-pressed={activeTab === "attendance"}
+                onClick={() => setActiveTab("attendance")}
+                className={cn(
+                  "inline-flex h-9 items-center justify-center gap-2 rounded-md px-3 text-sm font-semibold transition",
+                  activeTab === "attendance"
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                )}
+              >
+                <CalendarCheck className="size-4" />
+                근무 내역
+              </button>
+              <button
+                type="button"
+                aria-pressed={activeTab === "salary"}
+                onClick={() => setActiveTab("salary")}
+                className={cn(
+                  "inline-flex h-9 items-center justify-center gap-2 rounded-md px-3 text-sm font-semibold transition",
+                  activeTab === "salary"
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                )}
+              >
+                <ReceiptText className="size-4" />
+                급여 내역
+              </button>
+            </div>
+          </div>
+
+          {activeTab === "attendance" ? <AttendanceDetails /> : <SalaryDetails />}
+        </section>
       </section>
     </main>
+  );
+}
+
+function AttendanceDetails() {
+  return (
+    <div className="space-y-3">
+      <div className="hidden overflow-hidden rounded-lg border bg-card shadow-sm md:block">
+        <table className="w-full table-fixed text-left text-sm">
+          <thead className="bg-muted/70 text-muted-foreground">
+            <tr>
+              <th className="px-4 py-3 font-semibold">날짜</th>
+              <th className="px-4 py-3 font-semibold">근무</th>
+              <th className="px-4 py-3 font-semibold">출근</th>
+              <th className="px-4 py-3 font-semibold">퇴근</th>
+              <th className="px-4 py-3 font-semibold">휴게</th>
+              <th className="px-4 py-3 font-semibold">총 시간</th>
+              <th className="px-4 py-3 font-semibold">상태</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y">
+            {attendanceRows.map((row) => (
+              <tr key={`${row.date}-${row.type}`} className="bg-card">
+                <td className="px-4 py-4 font-semibold">{row.date}</td>
+                <td className="px-4 py-4">{row.type}</td>
+                <td className="px-4 py-4">{row.clockIn}</td>
+                <td className="px-4 py-4">{row.clockOut}</td>
+                <td className="px-4 py-4">{row.breakTime}</td>
+                <td className="px-4 py-4 font-semibold">{row.total}</td>
+                <td className="px-4 py-4">
+                  <span
+                    className={cn(
+                      "inline-flex rounded-full px-2.5 py-1 text-xs font-bold",
+                      row.status === "완료"
+                        ? "bg-primary/10 text-primary"
+                        : "bg-accent text-accent-foreground",
+                    )}
+                  >
+                    {row.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="grid gap-3 md:hidden">
+        {attendanceRows.map((row) => (
+          <article key={`${row.date}-${row.type}`} className="rounded-lg border bg-card p-4 shadow-sm">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="font-bold">{row.date}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{row.type} 근무</p>
+              </div>
+              <span className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">
+                {row.status}
+              </span>
+            </div>
+            <dl className="mt-4 grid grid-cols-2 gap-3 text-sm">
+              {[
+                ["출근", row.clockIn],
+                ["퇴근", row.clockOut],
+                ["휴게", row.breakTime],
+                ["총 시간", row.total],
+              ].map(([label, value]) => (
+                <div key={label} className="rounded-lg bg-muted/60 p-3">
+                  <dt className="text-muted-foreground">{label}</dt>
+                  <dd className="mt-1 font-bold">{value}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-4 text-sm text-muted-foreground">{row.memo}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SalaryDetails() {
+  return (
+    <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
+      <div className="grid gap-3 sm:grid-cols-2">
+        {salaryItems.map(([label, value, note]) => (
+          <article key={label} className="rounded-lg border bg-card p-5 shadow-sm">
+            <div className="mb-5 flex items-center justify-between gap-3">
+              <p className="font-bold">{label}</p>
+              <WalletCards className="size-5 text-primary" />
+            </div>
+            <p className="text-2xl font-black tracking-tight">{value}</p>
+            <p className="mt-2 text-sm text-muted-foreground">{note}</p>
+          </article>
+        ))}
+      </div>
+
+      <aside className="rounded-lg border bg-primary p-5 text-primary-foreground shadow-sm">
+        <p className="text-sm font-semibold text-primary-foreground/75">이번 달 급여</p>
+        <div className="mt-5 space-y-4">
+          {salarySummary.map(([label, value]) => (
+            <div key={label} className="flex items-center justify-between gap-4 border-b border-white/15 pb-4 last:border-0 last:pb-0">
+              <span className="text-sm text-primary-foreground/75">{label}</span>
+              <strong className="text-right text-lg">{value}</strong>
+            </div>
+          ))}
+        </div>
+      </aside>
+    </div>
   );
 }

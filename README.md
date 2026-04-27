@@ -9,6 +9,20 @@
 
 이 프로젝트는 근무자가 자신의 근무 정보와 예상 급여를 확인하고, 관리자가 근무자별 출퇴근 기록과 시급, 지급 예정 급여를 관리하는 작은 근태 관리 시스템입니다.
 
+## 화면 미리보기
+
+### 메인 화면
+
+![Worklog Mate 메인 화면](docs/screenshots/home.png)
+
+### 근무자 대시보드
+
+![근무자 대시보드](docs/screenshots/worker-dashboard.png)
+
+### 관리자 대시보드
+
+![관리자 대시보드](docs/screenshots/admin-dashboard.png)
+
 ## 서비스 구성
 
 ### 1. 근무자용 웹서비스

@@ -1,31 +1,40 @@
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
+import { toErrorResponse } from "@/lib/api-errors";
 import { createScheduleSchema } from "@/lib/validations";
 
 export async function GET() {
-  const schedules = await prisma.workSchedule.findMany({
-    include: {
-      worker: {
-        select: {
-          id: true,
-          name: true,
-          position: true,
+  try {
+    const schedules = await prisma.workSchedule.findMany({
+      include: {
+        worker: {
+          select: {
+            id: true,
+            name: true,
+            position: true,
+          },
         },
       },
-    },
-    orderBy: [{ workDate: "asc" }, { startTime: "asc" }],
-  });
+      orderBy: [{ workDate: "asc" }, { startTime: "asc" }],
+    });
 
-  return NextResponse.json(schedules);
+    return NextResponse.json(schedules);
+  } catch (error) {
+    return toErrorResponse(error);
+  }
 }
 
 export async function POST(request: Request) {
-  const body = createScheduleSchema.parse(await request.json());
+  try {
+    const body = createScheduleSchema.parse(await request.json());
 
-  const schedule = await prisma.workSchedule.create({
-    data: body,
-  });
+    const schedule = await prisma.workSchedule.create({
+      data: body,
+    });
 
-  return NextResponse.json(schedule, { status: 201 });
+    return NextResponse.json(schedule, { status: 201 });
+  } catch (error) {
+    return toErrorResponse(error);
+  }
 }
